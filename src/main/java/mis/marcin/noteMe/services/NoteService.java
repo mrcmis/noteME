@@ -41,4 +41,18 @@ public class NoteService {
 
         return noteRepository.save(note);
     }
+
+    public boolean delete(Integer id){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<Note> toDelete = Optional.of(noteRepository.findById(id).get());
+
+        Note note = toDelete.get();
+        User owner = note.getOwner();
+        if(owner.getUsername().equals(user.getUsername())){
+            noteRepository.delete(note);
+            return true;
+        }
+        return false;
+    }
 }

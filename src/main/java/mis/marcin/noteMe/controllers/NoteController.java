@@ -47,4 +47,12 @@ public class NoteController {
                 })
                 .orElseGet(() -> noteService.save(note));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteNote(@PathVariable Integer id) {
+        return (noteService.delete(id) ?
+                ResponseEntity.noContent():
+                ResponseEntity.notFound())
+                .build();
+    }
 }
